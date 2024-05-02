@@ -1,19 +1,15 @@
-import * as React from 'react';
-import NextLink from 'next/link';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import moment from 'moment';
-
-import Title from './title';
-
-import styles from '../../styles/Table.module.css';
+import * as React from "react";
+import NextLink from "next/link";
+import Link from "@mui/material/Link";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TablePagination from "@mui/material/TablePagination";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import moment from "moment";
 
 // dynamic objects
 
@@ -76,13 +72,13 @@ function CellRenderer(renderProps: CellData) {
         <TableRow key={index}>
           {columnsDef.map((columnDef: ColumnDef) =>
             tableConfig &&
-            tableConfig['linksTo'].hasOwnProperty(columnDef.column) ? (
+            tableConfig["linksTo"].hasOwnProperty(columnDef.column) ? (
               <TableCell key={columnDef.column + index}>
                 <NextLink
-                  className=' hover:text-green-700 pl-1 text-blue-700'
-                  href={tableConfig['linksTo'][columnDef.column].link.replace(
-                    ':' + tableConfig['uniqueIdentifier'],
-                    row[tableConfig['uniqueIdentifier']]
+                  className=" hover:text-green-700 pl-1 text-blue-700"
+                  href={tableConfig["linksTo"][columnDef.column].link.replace(
+                    ":" + tableConfig["uniqueIdentifier"],
+                    row[tableConfig["uniqueIdentifier"]]
                   )}
                   // width={columnDef.width ? columnDef.width : '10%'}
                 >
@@ -92,40 +88,43 @@ function CellRenderer(renderProps: CellData) {
             ) : (
               <TableCell
                 key={columnDef.column + index}
-                width={columnDef.width ? columnDef.width : '10%'}>
+                width={columnDef.width ? columnDef.width : "10%"}
+              >
                 {row[columnDef.column]}
               </TableCell>
             )
           )}
 
           {tableConfig &&
-          tableConfig['linksTo'].hasOwnProperty('editAction') ? (
-            <TableCell width='5%' align='center'>
+          tableConfig["linksTo"].hasOwnProperty("editAction") ? (
+            <TableCell width="5%" align="center">
               <NextLink
-                href={tableConfig['linksTo']['editAction'].link.replace(
-                  ':' + tableConfig['uniqueIdentifier'],
-                  row[tableConfig['uniqueIdentifier']]
-                )}>
+                href={tableConfig["linksTo"]["editAction"].link.replace(
+                  ":" + tableConfig["uniqueIdentifier"],
+                  row[tableConfig["uniqueIdentifier"]]
+                )}
+              >
                 <EditIcon />
               </NextLink>
             </TableCell>
           ) : (
-            ''
+            ""
           )}
 
           {tableConfig &&
-          tableConfig['linksTo'].hasOwnProperty('deleteAction') ? (
-            <TableCell width='5%' align='center'>
+          tableConfig["linksTo"].hasOwnProperty("deleteAction") ? (
+            <TableCell width="5%" align="center">
               <NextLink
-                href={tableConfig['linksTo']['deleteAction'].link.replace(
-                  ':' + tableConfig['uniqueIdentifier'],
-                  row[tableConfig['uniqueIdentifier']]
-                )}>
+                href={tableConfig["linksTo"]["deleteAction"].link.replace(
+                  ":" + tableConfig["uniqueIdentifier"],
+                  row[tableConfig["uniqueIdentifier"]]
+                )}
+              >
                 <DeleteIcon />
               </NextLink>
             </TableCell>
           ) : (
-            ''
+            ""
           )}
         </TableRow>
       ))}
@@ -144,10 +143,10 @@ function formatValues(columnsDef: Array<ColumnDef>, rows: Array<Row>) {
       return value ? moment(value).format(columnFormatting.format) : value;
     },
     select: function (columnFormatting: ColumnFormatting, value: string) {
-      return 'options' in columnFormatting && columnFormatting.options![value]
+      return "options" in columnFormatting && columnFormatting.options![value]
         ? columnFormatting.options![value]
         : value;
-    }
+    },
   };
   rows.map(function (val, index) {
     Object.keys(val).forEach((key) => {
@@ -157,7 +156,7 @@ function formatValues(columnsDef: Array<ColumnDef>, rows: Array<Row>) {
 
       if (
         columnDefinition !== undefined &&
-        columnDefinition.hasOwnProperty('columnFormatting')
+        columnDefinition.hasOwnProperty("columnFormatting")
       ) {
         let columntType: string = columnDefinition.columnFormatting!.type;
         val[key] = formatData[columntType](
@@ -205,29 +204,31 @@ export default function TableViewer(props: TableData) {
 
   return (
     <React.Fragment>
-      <Table size='small'>
+      <Table size="small">
         <TableHead>
-          <TableRow className={styles['edat-table-header']}>
+          <TableRow className="bg-primary">
             {columnsDef.map((columnDef: ColumnDef) => (
               <TableCell
                 key={columnDef.column}
-                sx={{ color: 'white', fontWeight: 600 }}
-                width={columnDef.width ? columnDef.width : '10%'}>
+                sx={{ color: "white", fontWeight: 600 }}
+                width={columnDef.width ? columnDef.width : "10%"}
+              >
                 {columnDef.columnHeader}
               </TableCell>
             ))}
             {tableConfig &&
-            (tableConfig['linksTo'].hasOwnProperty('deleteAction') ||
-              tableConfig['linksTo'].hasOwnProperty('editAction')) ? (
+            (tableConfig["linksTo"].hasOwnProperty("deleteAction") ||
+              tableConfig["linksTo"].hasOwnProperty("editAction")) ? (
               <TableCell
                 colSpan={2}
-                width='10%'
-                sx={{ color: 'white', fontWeight: 600 }}
-                align='center'>
+                width="10%"
+                sx={{ color: "white", fontWeight: 600 }}
+                align="center"
+              >
                 Actions
               </TableCell>
             ) : (
-              ''
+              ""
             )}
           </TableRow>
         </TableHead>
@@ -249,7 +250,7 @@ export default function TableViewer(props: TableData) {
       </Table>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
-        component='div'
+        component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
