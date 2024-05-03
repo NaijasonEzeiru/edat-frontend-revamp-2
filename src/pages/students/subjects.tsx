@@ -240,7 +240,7 @@ const Subjects = () => {
     <ProtectedRoute allowedRoles={["student", "admin"]}>
       <DefaultLayout
         children={
-          <div className="mt-4 flex flex-col md:flex-row gap-3">
+          <div className="mt-4 flex flex-col lg:flex-row gap-3">
             <div className="mb-6 md:w-[calc(48vw-128px)]">
               <div>
                 <h3 className="text-lg font-semibold">Mathematics</h3>

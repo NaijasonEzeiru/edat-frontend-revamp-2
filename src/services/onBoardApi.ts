@@ -52,7 +52,7 @@ export const onBoardApi = createApi({
     }),
     getUser: builder.query({
       query: ({ userId, orgCode, apiRoute, role }) => ({
-        url: `/users/${apiRoute}/${role}/${orgCode}?user_id=${userId}`,
+        url: `/${orgCode}/${userId}/users/profile/${role}`,
         method: "get",
       }),
       transformResponse: (response: any, meta, arg) => {

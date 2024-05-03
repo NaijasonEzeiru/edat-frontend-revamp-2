@@ -107,4 +107,5 @@ export const EditParentDataSchema = z.object({
   spouse_qualification: z.string().optional(),
   spouse_occupation: z.string().optional(),
   spouse_contact_no: z.string().optional(),
+  no_of_children: z.coerce.number().positive(),
 });

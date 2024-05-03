@@ -125,7 +125,7 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
         <span className="text-2xl md:text-4xl flex gap-3 items-center justify-between">
           <span className="relative">
             <button
-              className="relative block"
+              className="relative block hover:opacity-70"
               onClick={() => setShowLogout(!showLogOut)}
             >
               <Image
@@ -193,13 +193,17 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
                   }
                   className="size-36 rounded-full"
                 />
-                <label className="absolute rounded-full size-8 bg-[#17B3A6] flex items-center justify-center right-2 bottom-1">
+                <label
+                  className="absolute rounded-full size-8 bg-[#17B3A6] flex items-center justify-center right-2 bottom-1 hover:scale-105"
+                  tabIndex={0}
+                >
                   <Camera className="size-4" />
                   <input
                     accept="image/*"
                     // id="profile-image-upload"
                     type="file"
-                    style={{ display: "none" }}
+                    // style={{ display: "none" }}
+                    className="w-0 h-0"
                     onChange={(event) =>
                       updateProfilePicture(
                         event.target.files ? event.target.files[0] : null

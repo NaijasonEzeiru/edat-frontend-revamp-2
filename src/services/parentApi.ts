@@ -4,6 +4,31 @@ import addDefaulHeaders from "../utils/authHeader";
 
 const { publicRuntimeConfig } = getConfig();
 
+type ChildList = {
+  results: {
+    items:
+      | {
+          user_id: string;
+          first_name: string;
+          last_name: string;
+        }[]
+      | [];
+  };
+};
+
+type Result =
+  | [
+      {
+        fullname: string;
+        max_score: number;
+        student_id: number;
+        score_percent: number;
+        student_score: number;
+        learning_outcome: string;
+      }
+    ]
+  | [];
+
 export const parentApi = createApi({
   reducerPath: "parentApi",
   baseQuery: fetchBaseQuery({
@@ -20,7 +45,7 @@ export const parentApi = createApi({
         url: `${orgCode}/${userId}/parent/children/list`,
         method: "get",
       }),
-      transformResponse: (response: any, meta, arg) => {
+      transformResponse: (response: ChildList, meta, arg) => {
         return response.results.items ?? [];
       },
       providesTags: ["children"],
@@ -33,6 +58,21 @@ export const parentApi = createApi({
       transformResponse: (response: any, meta, arg) => {
         return response.results.items[0] ?? [];
       },
+    }),
+    getStudentPerformance: builder.query({
+      query: ({ userId, orgCode, parentId }) => ({
+        url: `${orgCode}/${userId}/student/report/student-performance-report?parent_id=${parentId}`,
+        method: "get",
+      }),
+      transformResponse: (response: Result, meta, arg) => {
+        return response;
+      },
+    }),
+    getExamaninerFeedback: builder.query({
+      query: ({ orgCode, userId, parentId }) => ({
+        url: `/aiprompt/evaluate/student-summary?org_code=${orgCode}&student_id=${userId}&parent_id=${parentId}`,
+        method: "get",
+      }),
     }),
     getStudentsClassRoom: builder.query({
       query: ({ userId, orgCode, parentId }) => ({
@@ -103,4 +143,6 @@ export const {
   useLazyGetStudentQuizScoreQuery,
   useLazyGetSubjectsMetricsQuery,
   useLazyGetRecommendationQuery,
+  useLazyGetStudentPerformanceQuery,
+  useLazyGetExamaninerFeedbackQuery,
 } = parentApi;

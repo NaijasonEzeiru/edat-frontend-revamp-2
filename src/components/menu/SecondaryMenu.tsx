@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, ChangeEvent } from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -55,7 +55,7 @@ const SecondaryMenu: FC = () => {
         // { id: 2, name: "Skills", href: `/${routerPath}/skillset` },
         {
           id: 2,
-          name: "Classroom",
+          name: "Classrooms",
           href: `/${routerPath}/classroom`,
           icon: <Users />,
         },
@@ -71,7 +71,7 @@ const SecondaryMenu: FC = () => {
         },
         {
           id: 2,
-          name: "Classroom",
+          name: "Classrooms",
           href: `/${routerPath}/classroom`,
           icon: <Users />,
         },
@@ -108,60 +108,12 @@ const SecondaryMenu: FC = () => {
           icon: <UserRound />,
         },
         {
-          id: 6,
+          id: 2,
           name: "Add Child",
           href: `/${user.role}s/add_child`,
           icon: <UserPlus />,
         },
       ];
-      // if (data) {
-      //   const v = data.filter((stds, index) => stds.user_name !== null);
-      //   if (v.length) {
-      //     let i = 0;
-      //     if (wardIndex) {
-      //       i = wardIndex;
-      //     }
-      //     _menus = [
-      //       {
-      //         id: 1,
-      //         name: "Profile",
-      //         href: `/${user.role}s/profile`,
-      //         icon: <UserRound />,
-      //       },
-      //       {
-      //         id: 2,
-      //         name: `${v[i].first_name}'s Subjects`,
-      //         href: `/${user.role}s/${v[i].user_id}/subjects`,
-      //         icon: <BookText />,
-      //       },
-      //       {
-      //         id: 3,
-      //         name: `${v[i].first_name}'s Classroom`,
-      //         href: `/${user.role}s/${v[i].user_id}/classroom`,
-      //         icon: <Users />,
-      //       },
-      //       {
-      //         id: 4,
-      //         name: `${v[i].first_name}'s Recommendations`,
-      //         href: `/${user.role}s/${v[i].user_id}/recommendation`,
-      //         icon: <BadgeCheck />,
-      //       },
-      //       {
-      //         id: 5,
-      //         name: `${v[i].first_name}'s Profile`,
-      //         href: `/${user.role}s/${v[i].user_id}/profile`,
-      //         icon: <UserRound />,
-      //       },
-      //       {
-      //         id: 6,
-      //         name: "Add Child",
-      //         href: `/${user.role}s/add_child`,
-      //         icon: <BadgeCheck />,
-      //       },
-      //     ];
-      //     setWards(v);
-      //   }
-      // }
       setMenus(_menus);
     }
 
@@ -178,8 +130,7 @@ const SecondaryMenu: FC = () => {
 
   useEffect(() => {
     if (data) {
-      let chlidMenu = [];
-      const v = data.filter((stds, index) => stds.user_name !== null);
+      const v = data.filter((stds) => stds.user_id != "-1");
       if (v.length) {
         let i = 0;
         if (wardIndex) {
@@ -211,10 +162,10 @@ const SecondaryMenu: FC = () => {
             icon: <UserRound />,
           },
           {
-            id: 5,
-            name: "Add Child",
-            href: `/${user.role}s/add_child`,
-            icon: <BadgeCheck />,
+            id: 4,
+            name: `${v[i].first_name}'s Result`,
+            href: `/${user.role}s/${v[i].user_id}/result`,
+            icon: <FileSearch2 />,
           },
         ]);
         setWards(v);
@@ -279,7 +230,11 @@ const SecondaryMenu: FC = () => {
           {user.role === "parent" && wards?.length > 1 && (
             <div className="flex gap-3 items-center justify-between  max-w-64">
               <p>Child</p>
-              <Select onValueChange={(e) => setWardIndex(+e)}>
+              <Select
+                onValueChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setWardIndex(+e)
+                }
+              >
                 <SelectTrigger className="w-40 border border-solid border-[#7cc5b9]">
                   <SelectValue placeholder="Select Student" />
                 </SelectTrigger>

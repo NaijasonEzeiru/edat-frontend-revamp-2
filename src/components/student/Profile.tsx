@@ -102,7 +102,7 @@ const Profile = ({ studentData, onEdit }: any) => {
             </span>
           </div>
           {!!studentData?.about_me && (
-            <span className=" mt-2">
+            <span className="block mt-4">
               <p className="font-semibold">ABOUT ME:</p>
               <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
                 {studentData.about_me}

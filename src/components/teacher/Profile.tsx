@@ -61,43 +61,38 @@ const Profile = ({ teacherData, onEdit }: any) => {
           )}
         </div>
         <div className="grow mt-4 md:mt-0">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <span className="w-full">
-                <p className="font-semibold">FIRST NAME:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {teacherData.first_name}
-                </p>
-              </span>
-              <span className="w-full">
-                <p className="font-semibold">LAST NAME:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {teacherData.last_name}
-                </p>
-              </span>
-            </div>
-            <div className="flex flex-col md:flex-row gap-4">
-              <span className="w-full">
-                <p className="font-semibold">GENDER:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {teacherData.gender}
-                </p>
-              </span>
-              <span className="w-full">
-                <p className="font-semibold">DATE OF BIRTH:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {teacherData.dob}
-                </p>
-              </span>
-            </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <span className="w-full">
+              <p className="font-semibold">FIRST NAME:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {teacherData.first_name}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">LAST NAME:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {teacherData.last_name}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">GENDER:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {teacherData.gender}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">DATE OF BIRTH:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {teacherData.dob}
+              </p>
+            </span>
             <span className="w-full">
               <p className="font-semibold">EMAIL:</p>
               <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
                 {teacherData.email}
               </p>
             </span>
-
-            {teacherData.qualification && (
+            {!!teacherData.qualification && (
               <span className="w-full">
                 <p className="font-semibold">QUALIFICATION:</p>
                 <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
@@ -105,7 +100,7 @@ const Profile = ({ teacherData, onEdit }: any) => {
                 </p>
               </span>
             )}
-            {teacherData.previous_school && (
+            {!!teacherData.previous_school && (
               <span className="w-full">
                 <p className="font-semibold">PREVIOUS SCHOOL:</p>
                 <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
@@ -113,7 +108,7 @@ const Profile = ({ teacherData, onEdit }: any) => {
                 </p>
               </span>
             )}
-            {teacherData.tutor_group && (
+            {!!teacherData.tutor_group && (
               <span className="w-full mb-2">
                 <p className="font-semibold">TUTOR GROUP:</p>
                 <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">

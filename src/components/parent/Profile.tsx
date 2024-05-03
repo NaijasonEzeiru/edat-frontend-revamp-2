@@ -60,35 +60,31 @@ const Profile = ({ parentData, onEdit }: any) => {
           )}
         </div>
         <div className="grow mt-4 md:mt-0">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <span className="w-full">
-                <p className="font-semibold">FIRST NAME:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {parentData?.first_name}
-                </p>
-              </span>
-              <span className="w-full">
-                <p className="font-semibold">LAST NAME:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {parentData?.last_name}
-                </p>
-              </span>
-            </div>
-            <div className="flex flex-col md:flex-row gap-4">
-              <span className="w-full">
-                <p className="font-semibold">DATE OF BIRTH:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {parentData?.dob}
-                </p>
-              </span>
-              <span className="w-full">
-                <p className="font-semibold">GENDER:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {parentData?.gender}
-                </p>
-              </span>
-            </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <span className="w-full">
+              <p className="font-semibold">FIRST NAME:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {parentData?.first_name}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">LAST NAME:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {parentData?.last_name}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">DATE OF BIRTH:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {parentData?.dob}
+              </p>
+            </span>
+            <span className="w-full">
+              <p className="font-semibold">GENDER:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {parentData?.gender}
+              </p>
+            </span>
             <span className="w-full">
               <p className="font-semibold">EMAIL:</p>
               <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
@@ -136,18 +132,18 @@ const Profile = ({ parentData, onEdit }: any) => {
                 </p>
               </span>
             )}
-            {!!parentData?.no_of_children && (
-              <span className="w-full">
-                <p className="font-semibold">NUMBER OF CHILDREN:</p>
-                <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
-                  {parentData?.no_of_children}
-                </p>
-              </span>
-            )}
           </div>
+          {!!parentData?.no_of_children && (
+            <span className="w-full">
+              <p className="font-semibold mt-4">NUMBER OF CHILDREN:</p>
+              <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
+                {parentData?.no_of_children}
+              </p>
+            </span>
+          )}
           {!!parentData?.about_me && (
             <span className="w-full mt-2">
-              <p className="font-semibold mt-5">ABOUT ME:</p>
+              <p className="font-semibold mt-4">ABOUT ME:</p>
               <p className="py-2.5 px-2 w-full bg-[#DDD] rounded-md">
                 {parentData?.about_me}
               </p>
