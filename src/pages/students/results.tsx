@@ -28,119 +28,60 @@ const results = () => {
     <ProtectedRoute allowedRoles={["student"]}>
       <DefaultLayout
         children={
-          <div className=" my-8">
-            <h1 className="text-center text-3xl mb-10">Results</h1>
-            <div className="">
-              <div className="flex justify-end">
-                {!!data &&
-                  Array.from(new Set(data?.map((item) => item.fullname))).map(
-                    (std, i) => (
-                      <p
-                        className="w-20 h-8 justify-center font-medium truncate"
-                        // style={{ backgroundColor: getColor(val) }}
-                        key={i}
-                      >
-                        {std}
-                      </p>
-                    )
-                  )}
-              </div>
-              {data &&
-                data?.map((val, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <p>{val.learning_outcome.slice(1, -1)}</p>{" "}
-                    <div className="flex">
-                      {!!data &&
-                        Array.from(
-                          new Set(data.map((item) => item.fullname))
-                        ).map((std, index) => {
-                          for (let j = 0; j < data.length; j++) {
-                            if (
-                              data[j].learning_outcome ==
-                                val.learning_outcome &&
-                              data[j].fullname == std
-                            ) {
-                              return (
-                                <p
-                                  className="w-20 h-8 flex items-center justify-center"
-                                  style={{
-                                    backgroundColor: getColor(
-                                      data[j].student_score
-                                    ),
-                                  }}
-                                  key={j + std}
-                                >
-                                  {`${data[j].student_score}%`}
-                                </p>
-                              );
-                            }
-                          }
-                          return (
-                            <p
-                              className="w-20 h-8 flex items-center justify-center"
-                              style={{ backgroundColor: getColor(val) }}
-                              key={std}
-                            >
-                              NIL
-                            </p>
-                          );
-                        })}
-                    </div>
-                  </div>
-                ))}
-              <div className="flex gap-2 mt-6">
-                <p className="font-semibold">Candidate's Name:</p>
-                <p>{aData?.[0]?.fullname}</p>
-              </div>
-              <div className="flex gap-2  mb-12">
-                <p className="font-semibold">Overall Mark</p>
-                <p>
-                  {/* {aData?.[0]?.get_student_performance_json?.reduce(
+          <>
+            <h1 className="text-center text-3xl mb-10">Your Results</h1>
+            <div className="flex gap-2 mt-6">
+              <p className="font-semibold">Candidate's Name:</p>
+              <p>{aData?.[0]?.fullname}</p>
+            </div>
+            <div className="flex gap-2  mb-12">
+              <p className="font-semibold">Overall Mark</p>
+              <p>
+                {/* {aData?.[0]?.get_student_performance_json?.reduce(
                     (accumulator, currentValue) =>
                       accumulator + currentValue.score_percent,
                     0
                   ) / aData?.[0]?.get_student_performance_json?.[0]?.length} */}
-                  0%
-                </p>
-              </div>
-              <h5 className="font-semibold">Learning Outcome Performance:</h5>
-              <div className="space-y-3">
-                {aData?.map((value, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between"
-                    >
-                      <p>
-                        {value.learning_outcome.slice(1, -1)} (
-                        {value.student_score}/{value.max_score})
-                      </p>
-                      <div className="flex gap-2 w-40 justify-start">
-                        <div className="h-8 w-20 relative bg-slate-300 rounded-sm">
-                          <div
-                            className={`absolute left-0 top-0 h-8 rounded-sm`}
-                            style={{
-                              width: `${value.score_percent}%`,
-                              backgroundColor: getColor(value.score_percent),
-                            }}
-                          ></div>
-                        </div>
-                        <p>({value.score_percent}%)</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <h4 className="mt-8 text-xl font-semibold mb-2">
-                Examiner Feedback:
-              </h4>
-              <p>{examinersFeedback?.recommendation}</p>
-              <p className="mt-2">
-                <span className="font-semibold pr-2">Overall:</span>
-                {examinersFeedback?.summary}
+                0%
               </p>
             </div>
-          </div>
+            <h5 className="font-semibold">Learning Outcome Performance:</h5>
+            <div className="space-y-3">
+              {aData?.map((value, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <p>
+                      {value.learning_outcome.slice(1, -1)} (
+                      {value.student_score}/{value.max_score})
+                    </p>
+                    <div className="flex gap-2 w-40 justify-start">
+                      <div className="h-8 w-20 relative bg-slate-300 rounded-sm">
+                        <div
+                          className={`absolute left-0 top-0 h-8 rounded-sm`}
+                          style={{
+                            width: `${value.score_percent}%`,
+                            backgroundColor: getColor(value.score_percent),
+                          }}
+                        ></div>
+                      </div>
+                      <p>({value.score_percent}%)</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <h4 className="mt-8 text-xl font-semibold mb-2">
+              Examiner Feedback:
+            </h4>
+            <p>{examinersFeedback?.recommendation}</p>
+            <p className="mt-2">
+              <span className="font-semibold pr-2">Overall:</span>
+              {examinersFeedback?.summary}
+            </p>
+          </>
         }
       />
     </ProtectedRoute>

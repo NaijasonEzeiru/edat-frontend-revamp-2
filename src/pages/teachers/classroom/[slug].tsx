@@ -12,6 +12,7 @@ import { Grid, IconButton, TextField, Avatar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppSelector } from "@/store/hooks";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const avatarColors = [
   "#F44336",
@@ -142,6 +143,12 @@ const ClassRoom = () => {
                   </Link>
                 ))}
             </div>
+            <Link
+              href="/teachers/classroom/student"
+              className="mt-6 text-primary block"
+            >
+              View All Scores
+            </Link>
             <span className="flex gap-1 mt-7 w-full justify-end">
               <p> Total Students:</p>
               <p>{classRoomsData.length}</p>

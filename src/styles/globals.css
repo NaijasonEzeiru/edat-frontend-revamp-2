@@ -57,3 +57,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  /* background-color: #f3f3f3; */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #17b3a6;
+  border-radius: 20px;
+  /* outline: 1px solid green; */
+}

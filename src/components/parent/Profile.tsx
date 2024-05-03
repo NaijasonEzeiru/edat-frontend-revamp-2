@@ -8,9 +8,11 @@ const Profile = ({ parentData, onEdit }: any) => {
   const [updateProfileImage, { isLoading }] =
     useUserProfilePictureUpdateMutation();
 
-  const updateProfilePicture = async (value) => {
+  const updateProfilePicture = async (value: File | null) => {
     const formData = new FormData();
-    formData.append("image", value);
+    if (value) {
+      formData.append("image", value);
+    }
     updateProfileImage({
       userId: parentData.user_id,
       orgCode: parentData.org_code,
@@ -22,7 +24,7 @@ const Profile = ({ parentData, onEdit }: any) => {
     <>
       <h2 className="text-2xl font-semibold md:text-center">Your Profile</h2>
       <div className="flex gap-4 md:gap-16 flex-col md:flex-row mt-5 md:mt-10">
-        <div className=" mx-auto md:w-72 h-full relative">
+        <div className=" mx-auto md:w-72 h-full relative md:hidden">
           {isLoading ? (
             <div className="animate-spin flex justify-center items-center h-48 text-4xl text-slate-500 duration-1000">
               <FaSpinner />

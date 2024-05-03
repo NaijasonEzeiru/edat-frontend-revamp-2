@@ -277,7 +277,7 @@ const SecondaryMenu: FC = () => {
       {user.role != "teacher" && (
         <div className="flex gap-4 flex-col w-full px-6">
           {user.role === "parent" && wards?.length > 1 && (
-            <div className="flex gap-3 items-center md:justify-between">
+            <div className="flex gap-3 items-center justify-between  max-w-64">
               <p>Child</p>
               <Select onValueChange={(e) => setWardIndex(+e)}>
                 <SelectTrigger className="w-40 border border-solid border-[#7cc5b9]">
@@ -293,7 +293,7 @@ const SecondaryMenu: FC = () => {
               </Select>
             </div>
           )}
-          <div className="flex gap-3 items-center md:justify-between">
+          <div className="flex gap-3 items-center justify-between  max-w-64">
             <p>Subject</p>
             <Select>
               <SelectTrigger className="w-40 border border-solid border-[#7cc5b9]">

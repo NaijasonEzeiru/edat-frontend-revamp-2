@@ -5,12 +5,15 @@ import SecondaryMenu from "../components/menu/SecondaryMenu";
 import { logout } from "../store/authSlice";
 import ChatBot from "@/components/student/ChatBot";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useLazyGetUserQuery } from "@/services/onBoardApi";
+import {
+  useLazyGetUserQuery,
+  useUserProfilePictureUpdateMutation,
+} from "@/services/onBoardApi";
 import { useToast } from "@/components/ui/use-toast";
 import { jwtDecode } from "jwt-decode";
-import { FaRegUser } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import eventBus from "@/utils/eventBus";
+import { Camera, LoaderCircle } from "lucide-react";
 
 const TeacherLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
@@ -31,6 +34,22 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
     toast({
       variant: "default",
       description: "Succesfully logged out",
+    });
+  };
+
+  const [updateProfileImage, { isLoading: imgUpdateLoading }] =
+    useUserProfilePictureUpdateMutation();
+
+  const updateProfilePicture = async (value: File | null) => {
+    const formData = new FormData();
+    if (value) {
+      formData.append("image", value);
+    }
+    updateProfileImage({
+      userId: data.user_id,
+      orgCode: data.org_code,
+      role: user.role,
+      data: formData,
     });
   };
 
@@ -64,7 +83,7 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const handleAlertClose = (index) => {
+  const handleAlertClose = (index: number) => {
     const updatedAlerts = alerts.map((alert, i) => {
       if (i === index) {
         return { ...alert, open: false };
@@ -131,14 +150,6 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
               </Button>
             )}
           </span>
-          {/* <button
-            className="relative md:hidden"
-            onClick={() => {
-              setShowNav(!showNav);
-            }}
-          >
-            <BiMenuAltLeft />
-          </button> */}
           <button
             tabIndex={0}
             aria-expanded={showNav}
@@ -160,22 +171,44 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
       </header>
       <div className="grid grid-flow-col">
         <aside
-          className={`md:w-64 flex flex-col items-center gap-7 bg-[#00327f] py-8 h-[calc(100vh-44px)] md:h-[calc(100vh-64px)] text-white overflow-y-auto transition-all ${
+          className={`md:w-72 flex flex-col items-center gap-7 bg-[#00327f] py-8 h-[calc(100vh-44px)] md:h-[calc(100vh-64px)] text-white overflow-y-auto transition-all custom-scrollbar ${
             showNav ? "w-screen" : "w-0"
           }`}
         >
           <div className="justify-items-center text-lg hidden md:grid">
-            <Image
-              width={150}
-              height={150}
-              alt="Avatar"
-              src={
-                data?.image_url == "https://example.com/image.jpg"
-                  ? "/profile.png"
-                  : data?.image_url || "/profile.png"
-              }
-              className="size-36 rounded-full"
-            />
+            {imgUpdateLoading ? (
+              <span className="size-36 flex items-center justify-center">
+                <LoaderCircle className="size-20 animate-spin" />
+              </span>
+            ) : (
+              <span className="relative">
+                <Image
+                  width={150}
+                  height={150}
+                  alt="Avatar"
+                  src={
+                    data?.image_url == "https://example.com/image.jpg"
+                      ? "/profile.png"
+                      : data?.image_url || "/profile.png"
+                  }
+                  className="size-36 rounded-full"
+                />
+                <label className="absolute rounded-full size-8 bg-[#17B3A6] flex items-center justify-center right-2 bottom-1">
+                  <Camera className="size-4" />
+                  <input
+                    accept="image/*"
+                    // id="profile-image-upload"
+                    type="file"
+                    style={{ display: "none" }}
+                    onChange={(event) =>
+                      updateProfilePicture(
+                        event.target.files ? event.target.files[0] : null
+                      )
+                    }
+                  />
+                </label>
+              </span>
+            )}
             <p className="capitalize text-2xl font-semibold">
               {`${data?.first_name} ${data?.last_name}`}
             </p>
@@ -185,12 +218,16 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
           <SecondaryMenu />
         </aside>
         <main
-          className={`px-2.5 py-6 md:px-6 md:py-14 overflow-y-auto h-[calc(100vh-44px)] md:h-[calc(100vh-64px)] md:w-[calc(100vw-256px)] ${
+          className={`px-2.5 py-6 md:px-6 md:py-14 overflow-y-auto h-[calc(100vh-44px)] md:h-[calc(100vh-64px)] md:w-[calc(100vw-18rem)] custom-scrollbar ${
             !showNav && "w-screen"
           }`}
         >
           {children}
-          {user?.role == "student" && <ChatBot name={data?.first_name} />}
+          {user?.role == "student" && (
+            <div className={`md:block ${showNav && "hidden"}`}>
+              <ChatBot name={data?.first_name} />
+            </div>
+          )}
         </main>
       </div>
     </div>
