@@ -231,12 +231,8 @@ const Subjects = () => {
             <div className="mb-6 md:w-[calc(48vw-128px)]">
               <div>
                 <h3 className="text-lg font-semibold">Mathematics</h3>
-                <p>
-                  More Information about Mathematics on the curriculum.
-                  Importance of Mathematics{" "}
-                </p>
                 <p className="pt-4 font-medium">
-                  Here is a breakdown of your performance in Mathematics
+                  Here is a breakdown of your child's performance in Mathematics
                 </p>
               </div>
               <div className="flex flex-wrap flex-col  mt-5 gap-6">
@@ -281,15 +277,13 @@ const Subjects = () => {
                     <h4 className="text-lg font-medium">Undone Tasks</h4>
                   </span>
 
-                  <ul className="mt-3 flex flex-col gap-1">
+                  <ul className="mt-3 flex flex-col list-disc">
                     {filteredActivityContent.map((activity, index) => (
                       <li
                         key={index}
-                        className="flex p-3 gap-3 justify-between items-center"
+                        className="flex p-3 justify-between items-center"
                       >
-                        <span className="flex flex-col gap-1">
-                          <p>{activity.learning_outcome}</p>
-                        </span>
+                        <p>{activity.learning_outcome}</p>
                       </li>
                     ))}
                   </ul>

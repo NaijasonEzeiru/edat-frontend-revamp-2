@@ -196,7 +196,7 @@ const SecondaryMenu: FC = () => {
           ))}
         </menu>
         <hr
-          className={`h-[1px] w-11/12 mx-2.5 bg-white/50 ${
+          className={`h-[1px] w-11/12 mx-2.5 grdline ${
             !childNav.length && "hidden"
           }`}
         />
@@ -224,7 +224,7 @@ const SecondaryMenu: FC = () => {
           </menu>
         )}
       </nav>
-      <hr className="h-[1px] w-11/12 mx-2.5 bg-white/50" />
+      <hr className="h-[1px] w-11/12 mx-2.5 grdline" />
       {user.role != "teacher" && (
         <div className="flex gap-4 flex-col w-full px-6">
           {user.role === "parent" && wards?.length > 1 && (

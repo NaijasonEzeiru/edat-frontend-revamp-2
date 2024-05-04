@@ -194,7 +194,7 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
                   className="size-36 rounded-full"
                 />
                 <label
-                  className="absolute rounded-full size-8 bg-[#17B3A6] flex items-center justify-center right-2 bottom-1 hover:scale-105"
+                  className="absolute rounded-full size-8 bg-[#17B3A6] flex items-center justify-center right-2 bottom-1 hover:scale-105 cursor-pointer"
                   tabIndex={0}
                 >
                   <Camera className="size-4" />
@@ -218,7 +218,7 @@ const TeacherLayout = ({ children }: { children: ReactNode }) => {
             </p>
             <p className="font-light">{data?.email}</p>
           </div>
-          <hr className="h-[1px] w-11/12 mx-2.5 hidden md:block bg-white/50" />
+          <hr className="h-[1px] w-11/12 mx-2.5 hidden md:block grdLine" />
           <SecondaryMenu />
         </aside>
         <main

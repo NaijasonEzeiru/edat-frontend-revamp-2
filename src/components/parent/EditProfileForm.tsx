@@ -4,10 +4,8 @@ import { useUserProfileUpdateMutation } from "@/services/onBoardApi";
 import { useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FaSpinner } from "react-icons/fa";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -18,8 +16,7 @@ import { useToast } from "../ui/use-toast";
 const EditProfileForm = ({ parentData, onClose }: any) => {
   const user = useAppSelector((state) => state.auth);
   const { toast } = useToast();
-  const router = useRouter();
-  const [updateProfile, { isLoading, data, isError, isSuccess }] =
+  const [updateProfile, { isLoading, data, isError, isSuccess, error }] =
     useUserProfileUpdateMutation();
 
   const {
@@ -64,7 +61,7 @@ const EditProfileForm = ({ parentData, onClose }: any) => {
           // @ts-expect-error
           description: error?.data?.errors?.message,
         });
-      } else {
+      } else if (error?.data?.detail?.[0]) {
         // @ts-expect-error
         error?.data.detail.map((err) => {
           setError(err.loc[1], { message: err.msg });
@@ -77,7 +74,7 @@ const EditProfileForm = ({ parentData, onClose }: any) => {
   }, [isSuccess, data, isError]);
 
   return (
-    <div>
+    <>
       <h5 className="text-2xl font-semibold text-center mb-7">Edit Profile</h5>
       <form className="flex gap-4 flex-col" onSubmit={handleSubmit(handleSave)}>
         <div className="grid gap-4 lg:grid-cols-2">
@@ -267,7 +264,7 @@ const EditProfileForm = ({ parentData, onClose }: any) => {
           </Button>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

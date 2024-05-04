@@ -21,7 +21,6 @@ import { useLazyGetStudentActivityListQuery } from "../../../services/studentApi
 
 const ClassRoom = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const user = useSelector((state: AppState) => state.auth);
   const quizzes = useSelector((state: AppState) => state.quiz);

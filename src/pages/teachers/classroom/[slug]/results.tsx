@@ -4,10 +4,21 @@ import ProtectedRoute from "@/components/route/ProtectedRoute";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { useEffect } from "react";
 import { useLazyGetAllStudentsPerfQuery } from "@/services/teacherApi";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const StudentDetails = () => {
   const user = useAppSelector((state) => state.auth);
   const [allStudentsPerformance, { data }] = useLazyGetAllStudentsPerfQuery({});
+  const router = useRouter();
+  const { slug } = router.query;
 
   useEffect(() => {
     allStudentsPerformance({
@@ -22,6 +33,25 @@ const StudentDetails = () => {
       <DefaultLayout
         children={
           <>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/teachers/classroom">Classroom</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/teachers/classroom/${slug}`}>Students</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <p className="font-medium">Results</p>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             <h1 className="text-center text-3xl">Results</h1>
             <div className="flex justify-end">
               {!!data &&

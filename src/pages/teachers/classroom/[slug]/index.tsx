@@ -1,24 +1,27 @@
 // pages/quiz/[slug].js
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ProtectedRoute from "../../../components/route/ProtectedRoute";
-import DefaultLayout from "../../../layouts/DefaultLayout";
-import EventBus from "../../../utils/eventBus";
-
-import { useLazyGetClassRoomByIdQuery } from "../../../services/teacherApi";
-
-import { Grid, IconButton, TextField, Avatar } from "@mui/material";
-
+import ProtectedRoute from "@/components/route/ProtectedRoute";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import EventBus from "@/utils/eventBus";
+import { useLazyGetClassRoomByIdQuery } from "@/services/teacherApi";
+import { IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppSelector } from "@/store/hooks";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const avatarColors = [
   "#F44336",
+  "#9C27B0",
   "#673AB7",
   "#E91E63",
-  "#9C27B0",
   "#3F51B5",
   "#2196F3",
   "#00BCD4",
@@ -92,35 +95,46 @@ const ClassRoom = () => {
       <DefaultLayout
         children={
           <>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/teachers/classroom">Classroom</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <p className="font-medium">Students</p>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             {classRoomsData && classRoomsData.length > 0 && (
-              <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
-                  <TextField
-                    label="Search Student"
-                    value={searchTerm}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setSearchTerm(e.target.value)
-                    }
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                      startAdornment: (
-                        <IconButton>
-                          <SearchIcon />
-                        </IconButton>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid>
+              <div>
+                <TextField
+                  label="Search Student"
+                  value={searchTerm}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setSearchTerm(e.target.value)
+                  }
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: (
+                      <IconButton>
+                        <SearchIcon />
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </div>
             )}
-            <div className="flex flex-wrap gap-12">
+            <div className="flex flex-wrap gap-12 mt-5">
               {classRoomsData &&
                 filteredClassrooms.map((student, index) => (
                   <Link
                     key={student.student_id}
-                    href={`/teachers/classroom/student/${student.student_id}?first_name=${student.first_name}&last_name=${student.last_name}`}
+                    href={`/teachers/classroom/${slug}/${student.student_id}?first_name=${student.first_name}&last_name=${student.last_name}`}
                     className="flex gap-3 items-center hover:scale-105"
                   >
                     <span
@@ -143,15 +157,17 @@ const ClassRoom = () => {
                   </Link>
                 ))}
             </div>
-            <Link
-              href="/teachers/classroom/student"
-              className="mt-6 text-primary block"
-            >
-              View All Scores
-            </Link>
-            <span className="flex gap-1 mt-7 w-full justify-end">
-              <p> Total Students:</p>
-              <p>{classRoomsData.length}</p>
+            <span className="flex items-center justify-between mt-8">
+              <Link
+                href={`/teachers/classroom/${slug}/results`}
+                className="text-primary block whitespace-nowrap"
+              >
+                View All Scores
+              </Link>
+              <span className="flex gap-1 w-full justify-end">
+                <p> Total Students:</p>
+                <p>{classRoomsData.length}</p>
+              </span>
             </span>
           </>
         }

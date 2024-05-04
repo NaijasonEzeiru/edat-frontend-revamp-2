@@ -1,205 +1,210 @@
-import React, { useState } from "react";
-import {
-  Typography,
-  TextField,
-  Button,
-  Stack,
-  Grid,
-  Autocomplete,
-} from "@mui/material";
-import Avatar from "@mui/material/Avatar";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { cn } from "@/lib/utils";
+import { EditTeacherSchema } from "@/lib/zodShema";
+import { useUserProfileUpdateMutation } from "@/services/onBoardApi";
+import { useAppSelector } from "@/store/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { useToast } from "../ui/use-toast";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+const EditProfileForm = ({ teacherData, onClose }: any) => {
+  const user = useAppSelector((state) => state.auth);
+  const { toast } = useToast();
+  const [updateProfile, { isLoading, data, isError, isSuccess, error }] =
+    useUserProfileUpdateMutation();
 
-const validationSchema = Yup.object().shape({
-  user_name: Yup.string().required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  first_name: Yup.string().required("First Name is required"),
-  last_name: Yup.string().required("Last Name is required"),
-  dob: Yup.date().required("Date of Birth is required"),
-  gender: Yup.string().required("Gender is required"),
-  about_me: Yup.string().optional(),
-  previous_school: Yup.string().optional(),
-  tutor_group: Yup.string().optional(),
-  qualification: Yup.string().optional(),
-  // subjects: Yup.string().optional()
-  // Add validation for other fields
-});
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<z.infer<typeof EditTeacherSchema>>({
+    mode: "onBlur",
+    resolver: zodResolver(EditTeacherSchema),
+    defaultValues: {
+      ...teacherData,
+    },
+  });
 
-const genderOptions = ["Male", "Female"];
-
-const EditProfileForm = ({ teacherData, onSave, onClose }: any) => {
-  const [previewImage, setPreviewImage] = useState(null);
-
-  const handleSubmit = (values, { setSubmitting }: any) => {
-    console.log(values);
-    onSave(values, setSubmitting);
+  const handleSave = async (updatedData: z.infer<typeof EditTeacherSchema>) => {
+    updateProfile({
+      userId: user.user_id,
+      orgCode: user.org_code,
+      data: {
+        ...updatedData,
+        experience: "3",
+        subjects: teacherData?.subjects || "Maths",
+        created_at: teacherData?.licence_start_date || "",
+        updated_at: teacherData?.licence_start_date || "",
+        image_url: teacherData?.image_url || "",
+      },
+      role: "teacher",
+    });
   };
 
   const handleCancel = () => {
     onClose();
   };
 
-  return (
-    <div>
-      <br />
-      <Formik
-        initialValues={teacherData}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ setFieldValue, values, touched, errors }) => (
-          <Form>
-            <Grid container spacing={2}>
-              <Grid item xs={2}>
-                <Typography variant="h5">Edit Profile</Typography>
-                <br />
-              </Grid>
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        description: "Profile editted successfully",
+      });
+      //   router.replace("/parents/profile");
+      handleCancel();
+    } else if (isError) {
+      // @ts-expect-error
+      if (error?.data?.errors?.message) {
+        toast({
+          variant: "destructive",
+          // @ts-expect-error
+          description: error?.data?.errors?.message,
+        });
+        // @ts-expect-error
+      } else if (error?.data?.detail?.[0]) {
+        // @ts-expect-error
+        error?.data.detail.map((err) => {
+          setError(err.loc[1], { message: err.msg });
+        });
+      }
+    }
+    if (isError) {
+      toast({ variant: "destructive", description: "Something went wrong" });
+    }
+  }, [isSuccess, data, isError]);
 
-              <Grid item xs={6}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Field
-                      name="first_name"
-                      label="First Name"
-                      as={TextField}
-                      fullWidth
-                      error={touched.first_name && !!errors.first_name}
-                      helperText={touched.first_name && errors.first_name}
-                    />
-                    <ErrorMessage name="first_name" component="div" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      name="last_name"
-                      label="Last Name"
-                      as={TextField}
-                      fullWidth
-                      error={touched.last_name && !!errors.last_name}
-                      helperText={touched.last_name && errors.last_name}
-                    />
-                    <ErrorMessage name="last_name" component="div" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      name="dob"
-                      label="Date of Birth"
-                      type="date"
-                      as={TextField}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      error={touched.dob && !!errors.dob}
-                      helperText={touched.dob && errors.dob}
-                    />
-                    <ErrorMessage name="dob" component="div" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Autocomplete
-                      // name="gender"
-                      options={genderOptions}
-                      getOptionLabel={(option) => option}
-                      value={genderOptions.find(
-                        (option) => option === values.gender
-                      )}
-                      onChange={(event, newValue) => {
-                        // const selectedId = newValue ? newValue : null; // Get selected ID or null
-                        setFieldValue("gender", newValue); // Update field value with selected ID
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Gender"
-                          fullWidth
-                          error={touched.gender && !!errors.gender}
-                          helperText={touched.gender && <p>errors.gender</p>}
-                        />
-                      )}
-                    />
-                    <ErrorMessage name="gender" component="div" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      name="about_me"
-                      label="About Me"
-                      multiline
-                      as={TextField}
-                      rows={4}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      error={touched.about_me && !!errors.about_me}
-                      helperText={touched.about_me && errors.about_me}
-                    />
-                    <ErrorMessage name="about_me" component="div" />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Field
-                      name="previous_school"
-                      label="Previous School"
-                      as={TextField}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      error={
-                        touched.previous_school && !!errors.previous_school
-                      }
-                      helperText={
-                        touched.previous_school && errors.previous_school
-                      }
-                    />
-                    <ErrorMessage name="previous_school" component="div" />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Field
-                      name="tutor_group"
-                      label="Tutor Group"
-                      as={TextField}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      error={touched.tutor_group && !!errors.tutor_group}
-                      helperText={touched.tutor_group && errors.tutor_group}
-                    />
-                    <ErrorMessage name="tutor_group" component="div" />
-                  </Grid>
-                  {/* <Grid item xs={6}>
-                    <Field name="subjects"
-                      label="Subjects"
-                      as={TextField}
-                      fullWidth InputLabelProps={{ shrink: true }}
-                      error={touched.subjects && !!errors.subjects}
-                      helperText={touched.subjects && errors.subjects}
-                    />
-                    <ErrorMessage name="subjects" component="div" />
-                  </Grid> */}
-                  <Grid item xs={12}>
-                    <Field
-                      name="qualification"
-                      label="Qualification"
-                      as={TextField}
-                      fullWidth
-                      InputLabelProps={{ shrink: true }}
-                      error={touched.qualification && !!errors.qualification}
-                      helperText={touched.qualification && errors.qualification}
-                    />
-                    <ErrorMessage name="qualification" component="div" />
-                  </Grid>
-                </Grid>
-                <br />
-                <Stack spacing={2} direction="row">
-                  <Button type="submit" variant="contained">
-                    Save Profile
-                  </Button>
-                  <Button onClick={handleCancel} variant="text">
-                    Cancel
-                  </Button>
-                </Stack>
-              </Grid>
-              {/* Add other fields in a similar manner */}
-            </Grid>
-            <br />
-          </Form>
-        )}
-      </Formik>
-    </div>
+  return (
+    <>
+      <h5 className="text-2xl font-semibold text-center mb-7">Edit Profile</h5>
+      <form className="flex gap-4 flex-col" onSubmit={handleSubmit(handleSave)}>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="first_name">First Name</Label>
+            <Input
+              id="first_name"
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register("first_name")}
+            />
+            <span className="text-red-400 text-xs">
+              <i>{errors?.first_name?.message}</i>
+            </span>
+          </div>
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="last_name">Last Name</Label>
+            <Input
+              id="last_name"
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register("last_name")}
+            />
+            <span className="text-red-400 text-xs">
+              <i>{errors?.last_name?.message}</i>
+            </span>
+          </div>
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="dateOfBirth">Date of Birth</Label>
+            <Input
+              id="dateOfBirth"
+              type="date"
+              disabled={isLoading}
+              {...register("dob")}
+            />
+            <span className="text-red-400 text-xs">
+              <i>{errors?.dob?.message}</i>
+            </span>
+          </div>
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="gender">Gender</Label>
+            <select
+              aria-required="true"
+              {...register("gender")}
+              aria-invalid={!!errors?.gender}
+              aria-errormessage="gender"
+              className={cn(
+                "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                //   className
+              )}
+              defaultValue={""}
+            >
+              <option value="" disabled>
+                --Select Gender--
+              </option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <span className="text-red-400 text-xs">
+              <i>{errors?.gender?.message}</i>
+            </span>
+          </div>
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="previous_school">Previous School</Label>
+            <Input
+              id="previous_school"
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register("previous_school")}
+            />
+            <span className="text-red-400 text-xs">
+              <i>{errors?.previous_school?.message}</i>
+            </span>
+          </div>
+          <div className="grid gap-1.5 w-full items-center">
+            <Label htmlFor="tutor_group">Tutor Group</Label>
+            <Input
+              id="tutor_group"
+              autoCorrect="off"
+              disabled={isLoading}
+              {...register("tutor_group")}
+            />
+            <span className="text-red-400 text-xs">
+              <i>{errors?.tutor_group?.message}</i>
+            </span>
+          </div>
+        </div>
+        <div className="grid gap-1.5 w-full items-center">
+          <Label htmlFor="qualification">Qualification</Label>
+          <Input
+            id="qualification"
+            autoCorrect="off"
+            disabled={isLoading}
+            {...register("qualification")}
+          />
+          <span className="text-red-400 text-xs">
+            <i>{errors?.qualification?.message}</i>
+          </span>
+        </div>
+        <div className="grid gap-1.5 w-full items-center">
+          <Label htmlFor="about_me">About Me</Label>
+          <Textarea
+            id="about_me"
+            disabled={isLoading}
+            {...register("about_me")}
+          />
+          <span className="text-red-400 text-xs">
+            <i>{errors?.about_me?.message}</i>
+          </span>
+        </div>
+        <div className="flex gap-6 justify-center">
+          <Button disabled={isLoading}>
+            {isLoading && (
+              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Save Profile
+          </Button>
+          <Button onClick={handleCancel} variant="outline">
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </>
   );
 };
 

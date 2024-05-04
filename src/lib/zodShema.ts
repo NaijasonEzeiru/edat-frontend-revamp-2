@@ -109,3 +109,37 @@ export const EditParentDataSchema = z.object({
   spouse_contact_no: z.string().optional(),
   no_of_children: z.coerce.number().positive(),
 });
+
+export const EditStudentDataSchema = z.object({
+  first_name: z.string().min(1, { message: "First name is required" }),
+  last_name: z.string().min(1, { message: "Last name is required" }),
+  dob: z.string(),
+  gender: z.string().min(1, { message: "Gender is required" }),
+  about_me: z.string().optional(),
+});
+
+export const EditTeacherSchema = z.object({
+  user_name: z
+    .string()
+    .min(2, { message: "Can not be less than 2 characters" })
+    .max(20, { message: "Can not be more than 20 characters" }),
+  first_name: z
+    .string()
+    .min(2, { message: "Can not be less than 2 characters" })
+    .max(20, { message: "Can not be more than 20 characters" }),
+  last_name: z
+    .string()
+    .min(2, { message: "Can not be less than 2 characters" })
+    .max(20, { message: "Can not be more than 20 characters" }),
+  dob: z.coerce.date(),
+  gender: z
+    .string()
+    .min(2, { message: "Select the gender" })
+    .max(30, { message: "Too long!" }),
+  about_me: z.string().optional(),
+  previous_school: z.string().optional(),
+  tutor_group: z.string().optional(),
+  qualification: z.string().optional(),
+  // subjects: Yup.string().optional()
+  // Add validation for other fields
+});

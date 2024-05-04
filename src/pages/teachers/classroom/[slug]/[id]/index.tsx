@@ -5,13 +5,22 @@ import ProtectedRoute from "@/components/route/ProtectedRoute";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { useEffect } from "react";
 import { useLazyGetStudentPerfQuery } from "@/services/teacherApi";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
 const StudentDetails = () => {
   const router = useRouter();
-  const { first_name, last_name, id } = router.query as {
+  const { first_name, last_name, id, slug } = router.query as {
     first_name: string;
     last_name: string;
     id: string;
+    slug: string;
   };
   const user = useAppSelector((state) => state.auth);
   const [aStudentsPerformance, { data: aData }] = useLazyGetStudentPerfQuery(
@@ -31,6 +40,27 @@ const StudentDetails = () => {
       <DefaultLayout
         children={
           <>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/teachers/classroom">Classroom</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/teachers/classroom/${slug}`}>Students</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <p className="font-medium">
+                    {first_name} {last_name}
+                  </p>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
             <h1 className="text-center text-3xl mb-10">
               {first_name?.charAt(0)?.toUpperCase() +
                 first_name?.slice(1) +

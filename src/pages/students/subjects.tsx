@@ -244,10 +244,7 @@ const Subjects = () => {
             <div className="mb-6 md:w-[calc(48vw-128px)]">
               <div>
                 <h3 className="text-lg font-semibold">Mathematics</h3>
-                <p>
-                  More Information about Mathematics on the curriculum.
-                  Importance of Mathematics{" "}
-                </p>
+                <p>More Information about Mathematics on the curriculum.</p>
                 <p className="pt-4 font-medium">
                   Here is a breakdown of your performance in Mathematics
                 </p>
