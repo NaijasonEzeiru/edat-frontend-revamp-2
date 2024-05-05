@@ -117,7 +117,7 @@ export const teacherApi = createApi({
     }),
     getCategoriesByClassId: builder.query({
       query: ({ orgCode, classId, userId }) => ({
-        url: `${orgCode}/${userId}/teacher/subjects/category/list/${classId}`,
+        url: `${orgCode}/${userId}/teacher/subjects/category/list/${classId}?teacher_id=${userId}`,
         method: "get",
       }),
       transformResponse: (response: any, meta, arg) => {

@@ -22,7 +22,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import { Dayjs } from "dayjs";
 
 import Snackbar from "@mui/material/Snackbar";
@@ -320,7 +320,7 @@ export default function AddUserForm() {
             }
           />
         </Grid>
-        {/* <Grid item xs={8}>
+        <Grid item xs={8}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date of birth"
@@ -329,7 +329,7 @@ export default function AddUserForm() {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-        </Grid> */}
+        </Grid>
         <Grid item xs={8}>
           <FormControl>
             <FormLabel id="demo-row-radio-buttons-group-label">
