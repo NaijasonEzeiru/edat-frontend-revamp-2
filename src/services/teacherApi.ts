@@ -98,7 +98,7 @@ export const teacherApi = createApi({
     }),
     addAITask: builder.query({
       query: ({ userId, orgCode, values, body, classId }) => ({
-        url: `/aiprompt/generate_questionset_openai/${classId}?total_questions=${values.total_questions}&model=gpt-3.5-turbo&estimated_time=${values.estimated_time}&total_score=${values.total_score}&question_type=${values.question_type}&exam_board=${values.exam_board}&user_country=${values.user_country}&points_per_question=${values.points_per_question}&teacher_id=${userId}&org_code=${orgCode}`,
+        url: `/aiprompt/generate_questionset_mistral/${classId}?total_questions=${values.total_questions}&estimated_time=${values.estimated_time}&total_score=${values.total_score}&question_type=${values.question_type}&exam_board=${values.exam_board}&user_country=${values.user_country}&points_per_question=${values.points_per_question}&teacher_id=${userId}&org_code=${orgCode}`,
         method: "POST",
         body,
       }),

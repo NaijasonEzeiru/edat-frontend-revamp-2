@@ -483,11 +483,11 @@ const ClassRoom = () => {
                   filteredClassrooms.map((classroom, index) => (
                     <Grid key={classroom.class_id} item xs={12} md={6}>
                       <Card
-                        sx={{ background: "#2ca1", borderRadius: "10px" }}
+                        sx={{ borderRadius: "10px" }}
                         className="classroom-card"
                       >
                         <CardHeader
-                          sx={{ background: "#18c3", borderRadius: "3px" }}
+                          sx={{ borderRadius: "3px" }}
                           avatar={
                             <Avatar
                               style={{
