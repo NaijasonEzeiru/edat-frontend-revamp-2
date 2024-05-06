@@ -80,3 +80,15 @@
     rgb(161, 165, 190)
   );
 }
+
+[type="checkbox"]:checked + label,
+[type="radio"]:checked + label {
+  transition: background-color 300ms;
+  background-color: #1212f157;
+}
+
+[type="radio"]:hover + label,
+[type="checkbox"]:hover + label {
+  transition: background-color 300ms;
+  border: #11112f solid 1px;
+}
